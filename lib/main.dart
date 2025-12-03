@@ -1,9 +1,29 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_theme.dart';
+import 'core/sources/secure_storage_service.dart';
 import 'presentation/routes/app_router.dart';
 
-void main() {
-  runApp(const AkiznizApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialisation de SharedPreferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode, // Active seulement en mode debug
+      builder: (context) => ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        ],
+        child: const AkiznizApp(),
+      ),
+    ),
+  );
 }
 
 class AkiznizApp extends StatelessWidget {
@@ -12,6 +32,10 @@ class AkiznizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Configuration DevicePreview
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+
       title: 'Akizniz?',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
