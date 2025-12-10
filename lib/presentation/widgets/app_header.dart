@@ -17,7 +17,8 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Color(0xFFEDEDED), width: 1)),
+          border:
+              Border(bottom: BorderSide(color: Color(0xFFEDEDED), width: 1)),
         ),
         child: Row(
           children: [
@@ -34,9 +35,10 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
             if (showLogin)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(AppColors.primary),
+                  backgroundColor: AppColors.primary,
                   shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                   elevation: 0,
                 ),
                 onPressed: () {},
@@ -59,7 +61,7 @@ class _HeaderNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? const Color(AppColors.primary) : const Color(AppColors.dark);
+    final color = active ? AppColors.primary : AppColors.dark;
     return Padding(
       padding: const EdgeInsets.only(right: 32),
       child: Text(
@@ -101,12 +103,13 @@ class _LanguageSwitcherState extends State<_LanguageSwitcher> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: _lang == 'en' ? const Color(AppColors.primary) : const Color(AppColors.dark),
+                color: _lang == 'en' ? AppColors.primary : AppColors.dark,
               ),
             ),
           ),
           const SizedBox(width: 8),
-          const Text('|', style: TextStyle(fontSize: 12, color: Color(0xFFBBBBBB))),
+          const Text('|',
+              style: TextStyle(fontSize: 12, color: Color(0xFFBBBBBB))),
           const SizedBox(width: 8),
           GestureDetector(
             onTap: () => setState(() => _lang = 'fr'),
@@ -115,7 +118,7 @@ class _LanguageSwitcherState extends State<_LanguageSwitcher> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: _lang == 'fr' ? const Color(AppColors.primary) : const Color(AppColors.dark),
+                color: _lang == 'fr' ? AppColors.primary : AppColors.dark,
               ),
             ),
           ),

@@ -110,6 +110,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: const Text('Se connecter'),
                   ),
                   const SizedBox(height: 16),
+
+                  // Bouton Google OAuth
+                  OutlinedButton.icon(
+                    onPressed: authState.isLoading ? null : _handleGoogleSignIn,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    icon: const Icon(Icons.g_mobiledata, size: 28),
+                    label: const Text('Continuer avec Google'),
+                  ),
+                  const SizedBox(height: 16),
+
                   TextButton(
                     onPressed: () {
                       // Navigation vers la page d'inscription
@@ -133,6 +145,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       );
 
       await ref.read(authProvider.notifier).login(params);
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      await ref.read(authProvider.notifier).signInWithGoogle();
+    } catch (e) {
+      if (mounted) {
+        _showErrorSnackBar('Erreur: $e');
+      }
     }
   }
 

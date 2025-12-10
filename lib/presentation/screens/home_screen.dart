@@ -93,16 +93,16 @@ class HomeScreen extends StatelessWidget {
             ),
             // Verification methods section
             Container(
-              color: const Color(AppColors.primaryWhite),
+              color: AppColors.primaryWhite,
               padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 32),
               child: Column(
                 children: [
                   Text(
                     'Est-il/elle vraiment célibataire ?',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontSize: 42,
+                          fontWeight: FontWeight.bold,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
@@ -225,9 +225,8 @@ class HomeScreen extends StatelessWidget {
 
 Widget _buildHeroText(BuildContext context, {required bool isSmall}) {
   return Column(
-    crossAxisAlignment: isSmall
-        ? CrossAxisAlignment.center
-        : CrossAxisAlignment.start,
+    crossAxisAlignment:
+        isSmall ? CrossAxisAlignment.center : CrossAxisAlignment.start,
     children: [
       Text(
         'La doute est en vous mais,',
@@ -240,11 +239,11 @@ Widget _buildHeroText(BuildContext context, {required bool isSmall}) {
       Text(
         'La vérité se trouve ici et nulle part ailleurs',
         style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-          fontSize: isSmall ? 34 : 56,
-          fontWeight: FontWeight.bold,
-          color: const Color(AppColors.primary),
-          height: 1.15,
-        ),
+              fontSize: isSmall ? 34 : 56,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+              height: 1.15,
+            ),
         textAlign: isSmall ? TextAlign.center : TextAlign.start,
       ),
       const SizedBox(height: 14),
@@ -258,7 +257,7 @@ Widget _buildHeroText(BuildContext context, {required bool isSmall}) {
         width: isSmall ? double.infinity : 270,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(AppColors.primary),
+            backgroundColor: AppColors.primary,
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
             elevation: 0,
@@ -298,7 +297,7 @@ class _HeroImages extends StatelessWidget {
             child: Transform.rotate(
               angle: -0.08,
               child: _MockCard(
-                color: const Color(AppColors.primary),
+                color: AppColors.primary,
                 label: 'Trouve ton partenaire',
                 width: baseW,
               ),
@@ -382,10 +381,10 @@ class _MockCard extends StatelessWidget {
 }
 
 class _VerificationCard extends StatelessWidget {
-  final int color;
+  final Color color;
   final IconData icon;
   final String badge;
-  final int badgeColor;
+  final Color badgeColor;
   final String title;
   final String sub;
   final String actionLabel;
@@ -428,10 +427,10 @@ class _VerificationCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(color).withValues(alpha: 0.12),
+                  color: color.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: Color(color), size: 28),
+                child: Icon(icon, color: color, size: 28),
               ),
               const Spacer(),
               Container(
@@ -440,13 +439,13 @@ class _VerificationCard extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Color(badgeColor).withValues(alpha: 0.15),
+                  color: badgeColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   badge,
                   style: TextStyle(
-                    color: Color(badgeColor),
+                    color: badgeColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
                   ),
@@ -457,17 +456,17 @@ class _VerificationCard extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              color: Color(AppColors.dark),
+              color: AppColors.dark,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             sub,
-            style: const TextStyle(
-              color: Color(AppColors.dark),
+            style: TextStyle(
+              color: AppColors.dark,
               fontSize: 14,
               height: 1.5,
             ),
@@ -478,8 +477,8 @@ class _VerificationCard extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: Text(
                 feature,
-                style: const TextStyle(
-                  color: Color(AppColors.dark),
+                style: TextStyle(
+                  color: AppColors.dark,
                   fontSize: 13,
                   height: 1.4,
                 ),
@@ -491,7 +490,7 @@ class _VerificationCard extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(color),
+                backgroundColor: color,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(

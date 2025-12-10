@@ -39,15 +39,15 @@ class StatCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: const Color(AppColors.primary), size: 30),
+              Icon(icon, color: AppColors.primary, size: 30),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   '$number\n$title',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(AppColors.dark),
+                    color: AppColors.dark,
                     height: 1.3,
                   ),
                 ),
@@ -57,7 +57,7 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             text,
-            style: const TextStyle(fontSize: 14, color: Color(AppColors.dark)),
+            style: TextStyle(fontSize: 14, color: AppColors.dark),
           ),
         ],
       ),

@@ -82,7 +82,7 @@ class _SearchNameScreenState extends State<SearchNameScreen> {
                 child: ElevatedButton(
                   onPressed: _showRelation,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(AppColors.primary),
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DT.rFull)),
                   ),
                   child: const Text('VOIR LA RELATION (10 points)'),
@@ -124,14 +124,14 @@ class _SearchNameScreenState extends State<SearchNameScreen> {
       margin: const EdgeInsets.only(top: DT.s5),
       padding: const EdgeInsets.all(DT.s5),
       decoration: BoxDecoration(
-        color: const Color(AppColors.primaryWhite),
+        color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(DT.rMd),
         border: Border.all(color: const Color(0xFFF1F1F3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
-          Icon(Icons.favorite, color: Color(AppColors.primary)),
+          Icon(Icons.favorite, color: AppColors.primary),
           SizedBox(width: DT.s3),
           Expanded(
             child: Text('Jean est en couple avec Marie depuis 2023.'),

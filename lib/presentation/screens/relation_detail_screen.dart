@@ -24,7 +24,7 @@ class RelationDetailScreen extends StatelessWidget {
               ),
               child: Row(
                 children: const [
-                  Icon(Icons.favorite, color: Color(AppColors.primary), size: 30),
+                  Icon(Icons.favorite, color: AppColors.primary, size: 30),
                   SizedBox(width: DT.s4),
                   Expanded(
                     child: Text('Paul est en couple avec Clara depuis 2022.',
@@ -43,7 +43,7 @@ class RelationDetailScreen extends StatelessWidget {
                 itemBuilder: (ctx, i) => Container(
                   padding: const EdgeInsets.all(DT.s4),
                   decoration: BoxDecoration(
-                    color: const Color(AppColors.primaryWhite),
+                    color: AppColors.primaryWhite,
                     borderRadius: BorderRadius.circular(DT.rSm),
                     border: Border.all(color: const Color(0xFFF1F1F3)),
                   ),

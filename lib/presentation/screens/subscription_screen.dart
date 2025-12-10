@@ -44,7 +44,7 @@ class SubscriptionScreen extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(DT.rMd),
                       boxShadow: DT.shadowSm,
-                      border: Border.all(color: isPremium ? const Color(AppColors.primary) : const Color(0xFFF1F1F3), width: 2),
+                      border: Border.all(color: isPremium ? AppColors.primary : const Color(0xFFF1F1F3), width: 2),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,10 +57,10 @@ class SubscriptionScreen extends StatelessWidget {
                                 margin: const EdgeInsets.only(left: DT.s3),
                                 padding: const EdgeInsets.symmetric(horizontal: DT.s3, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: const Color(AppColors.primaryWhite),
+                                  color: AppColors.primaryWhite,
                                   borderRadius: BorderRadius.circular(DT.rFull),
                                 ),
-                                child: const Text('Populaire', style: TextStyle(fontSize: 11, color: Color(AppColors.primary), fontWeight: FontWeight.w600)),
+                                child: const Text('Populaire', style: TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w600)),
                               ),
                           ],
                         ),
@@ -75,7 +75,7 @@ class SubscriptionScreen extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 4),
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.check_circle, color: Color(AppColors.green), size: 18),
+                                    Icon(Icons.check_circle, color: AppColors.green, size: 18),
                                     const SizedBox(width: DT.s2),
                                     Expanded(child: Text(f)),
                                   ],
@@ -88,7 +88,7 @@ class SubscriptionScreen extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isPremium ? const Color(AppColors.primary) : const Color(AppColors.dark),
+                              backgroundColor: isPremium ? AppColors.primary : AppColors.dark,
                             ),
                             child: Text(isPremium ? 'PASSER PREMIUM' : 'RESTER STANDARD'),
                           ),

@@ -16,20 +16,23 @@ class LoginParams {
 
 /// Paramètres pour l'inscription
 class RegisterParams {
-  final String name;
+  final String firstName;
+  final String lastName;
   final String email;
   final String password;
   final String? phone;
 
   const RegisterParams({
-    required this.name,
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.password,
     this.phone,
   });
 
   Map<String, dynamic> toJson() => {
-        'name': name,
+        'firstName': firstName,
+        'lastName': lastName,
         'email': email,
         'password': password,
         if (phone != null) 'phone': phone,
@@ -54,20 +57,17 @@ class VerificationParams {
 
 /// Réponse d'authentification
 class AuthResponse {
-  final String token;
-  final String refreshToken;
+  final String accessToken;
   final Map<String, dynamic> user;
 
   const AuthResponse({
-    required this.token,
-    required this.refreshToken,
+    required this.accessToken,
     required this.user,
   });
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
-      token: json['token'] as String,
-      refreshToken: json['refreshToken'] as String,
+      accessToken: json['accessToken'] as String,
       user: json['user'] as Map<String, dynamic>,
     );
   }

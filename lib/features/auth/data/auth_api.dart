@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../core/config/api_config.dart';
 import '../../../core/entities/user.dart';
 import '../../../core/sources/http_client.dart';
 import '../../../core/sources/secure_storage_service.dart';
@@ -25,11 +27,11 @@ class AuthApi {
         data: params.toJson(),
       );
 
-      final AuthResponse authResponse = AuthResponse.fromJson(response['data'] as Map<String, dynamic>);
-      
-      // Sauvegarde des tokens
-      await secureStorage.saveToken(authResponse.token);
-      await secureStorage.saveRefreshToken(authResponse.refreshToken);
+      final AuthResponse authResponse =
+          AuthResponse.fromJson(response['data'] as Map<String, dynamic>);
+
+      // Sauvegarde du token
+      await secureStorage.saveToken(authResponse.accessToken);
 
       return User.fromJson(authResponse.user);
     } on DioException catch (e) {
@@ -47,11 +49,11 @@ class AuthApi {
         data: params.toJson(),
       );
 
-      final AuthResponse authResponse = AuthResponse.fromJson(response['data'] as Map<String, dynamic>);
-      
-      // Sauvegarde des tokens
-      await secureStorage.saveToken(authResponse.token);
-      await secureStorage.saveRefreshToken(authResponse.refreshToken);
+      final AuthResponse authResponse =
+          AuthResponse.fromJson(response['data'] as Map<String, dynamic>);
+
+      // Sauvegarde du token
+      await secureStorage.saveToken(authResponse.accessToken);
 
       return User.fromJson(authResponse.user);
     } on DioException catch (e) {
@@ -97,7 +99,8 @@ class AuthApi {
     } on DioException catch (e) {
       throw handleError(e);
     } catch (e) {
-      throw BusinessException('Erreur lors de la récupération de l\'utilisateur: $e');
+      throw BusinessException(
+          'Erreur lors de la récupération de l\'utilisateur: $e');
     }
   }
 
@@ -120,6 +123,71 @@ class AuthApi {
       throw handleError(e);
     } catch (e) {
       throw BusinessException('Erreur lors du rafraîchissement du token: $e');
+    }
+  }
+
+  /// Obtient l'URL de base de l'API sans le trailing slash
+  String get _baseUrl {
+    final String url = ApiConfig.baseUrl;
+    return url.endsWith('/') ? url.substring(0, url.length - 1) : url;
+  }
+
+  /// Lance l'authentification Google dans le navigateur système
+  /// L'utilisateur sera redirigé vers l'API qui ouvrira Google OAuth
+  /// Après authentification, l'API redirigera vers akizniz://callback?token=JWT
+  Future<void> signInWithGoogle() async {
+    try {
+      // URL complète vers l'endpoint Google OAuth de ton API
+      final String googleAuthUrl = '$_baseUrl/auth/google';
+      final Uri uri = Uri.parse(googleAuthUrl);
+
+      // Vérifie si l'URL peut être lancée
+      final bool canLaunch = await canLaunchUrl(uri);
+
+      if (!canLaunch) {
+        throw BusinessException(
+          'Impossible d\'ouvrir le navigateur pour l\'authentification Google',
+        );
+      }
+
+      // Lance l'URL dans le navigateur système
+      // mode: LaunchMode.externalApplication force l'ouverture dans le navigateur
+      final bool launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        throw BusinessException(
+          'Échec de l\'ouverture du navigateur',
+        );
+      }
+      // 3. L'API redirige vers akizniz://callback?token=JWT
+      // 4. DeepLinkService intercepte le lien et extrait le token
+      // 5. AuthProvider traite le token via loginWithGoogleToken()
+    } on BusinessException {
+      rethrow;
+    } catch (e) {
+      throw BusinessException(
+        'Erreur lors du lancement de l\'authentification Google: $e',
+      );
+    }
+  }
+
+  /// Sauvegarde le token reçu via deep linking et récupère l'utilisateur
+  Future<User> loginWithGoogleToken(String token) async {
+    try {
+      // Sauvegarde le token
+      await secureStorage.saveToken(token);
+
+      // Récupère les informations de l'utilisateur avec ce token
+      return await getCurrentUser();
+    } catch (e) {
+      // En cas d'erreur, supprime le token invalide
+      await secureStorage.deleteToken();
+      throw BusinessException(
+        'Token invalide ou expiré: $e',
+      );
     }
   }
 }

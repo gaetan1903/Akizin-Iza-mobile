@@ -22,7 +22,7 @@ class PointsWalletScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: DT.s5, vertical: DT.s4),
                   decoration: BoxDecoration(
-                    color: const Color(AppColors.primaryWhite),
+                    color: AppColors.primaryWhite,
                     borderRadius: BorderRadius.circular(DT.rMd),
                     border: Border.all(color: const Color(0xFFF1F1F3)),
                   ),

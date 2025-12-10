@@ -94,12 +94,12 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
                     const SizedBox(height: DT.s7),
                     Text(
                       'Découvrez la vérité maintenant',
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(AppColors.primary),
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
                     ),
                     const SizedBox(height: DT.s2),
                     const Text(
@@ -166,9 +166,7 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               elevation: 2,
-              shadowColor: const Color(
-                AppColors.primary,
-              ).withValues(alpha: 0.3),
+              shadowColor: AppColors.primary.withValues(alpha: 0.3),
             ),
             child: _loading
                 ? const SizedBox(
@@ -195,16 +193,14 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
             color: const Color(0xFFFFF8F0),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: const Color(
-                AppColors.primaryOrange,
-              ).withValues(alpha: 0.3),
+              color: AppColors.primaryOrange.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.search,
-                color: Color(AppColors.primaryOrange),
+                color: AppColors.primaryOrange,
                 size: 20,
               ),
               const SizedBox(width: 8),
@@ -249,7 +245,7 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(AppColors.primary).withValues(alpha: 0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -263,12 +259,12 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(AppColors.primary).withValues(alpha: 0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.shield_outlined,
-              color: Color(AppColors.primary),
+              color: AppColors.primary,
               size: 48,
             ),
           ),
@@ -302,7 +298,7 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(AppColors.dark),
+            color: AppColors.dark,
           ),
         ),
         const SizedBox(height: DT.s4),
@@ -339,7 +335,7 @@ class _InfoBadge extends StatelessWidget {
   final IconData icon;
   final String title;
   final String text;
-  final int color;
+  final Color color;
   const _InfoBadge({
     required this.icon,
     required this.title,
@@ -363,7 +359,7 @@ class _InfoBadge extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: Color(color).withValues(alpha: 0.2),
+          color: color.withValues(alpha: 0.2),
           width: 1.5,
         ),
       ),
@@ -373,10 +369,10 @@ class _InfoBadge extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color(color).withValues(alpha: 0.12),
+              color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: Color(color), size: 24),
+            child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(height: 12),
           Text(
@@ -513,9 +509,9 @@ class _ResultBottomSheet extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.verified,
-                        color: Color(AppColors.primary),
+                        color: AppColors.primary,
                         size: 24,
                       ),
                     ],
@@ -530,14 +526,12 @@ class _ResultBottomSheet extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isCouple
-                        ? const Color(AppColors.primary).withValues(alpha: 0.1)
+                        ? AppColors.primary.withValues(alpha: 0.1)
                         : Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isCouple
-                          ? const Color(
-                              AppColors.primary,
-                            ).withValues(alpha: 0.3)
+                          ? AppColors.primary.withValues(alpha: 0.3)
                           : Colors.green.withValues(alpha: 0.3),
                       width: 1.5,
                     ),
@@ -546,9 +540,7 @@ class _ResultBottomSheet extends StatelessWidget {
                     children: [
                       Icon(
                         isCouple ? Icons.favorite : Icons.check_circle,
-                        color: isCouple
-                            ? const Color(AppColors.primary)
-                            : Colors.green,
+                        color: isCouple ? AppColors.primary : Colors.green,
                         size: 24,
                       ),
                       const SizedBox(width: 12),
@@ -558,9 +550,7 @@ class _ResultBottomSheet extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: isCouple
-                                ? const Color(AppColors.primary)
-                                : Colors.green,
+                            color: isCouple ? AppColors.primary : Colors.green,
                           ),
                         ),
                       ),
@@ -572,7 +562,7 @@ class _ResultBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isCouple
-                        ? const Color(AppColors.primary).withValues(alpha: 0.08)
+                        ? AppColors.primary.withValues(alpha: 0.08)
                         : Colors.green.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -592,7 +582,7 @@ class _ResultBottomSheet extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: const StadiumBorder(),
-                      side: const BorderSide(color: Color(AppColors.primary)),
+                      side: BorderSide(color: AppColors.primary),
                     ),
                     child: const Text('SE CONNECTER / CRÉER UN COMPTE'),
                   ),

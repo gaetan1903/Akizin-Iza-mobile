@@ -28,7 +28,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Image.asset(AppAssets.logoApp, height: 30),
             const SizedBox(width: 8),
-            const Text('Akizniz', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Akizniz',
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
@@ -43,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     TextButton.icon(
                       onPressed: () {},
                       style: TextButton.styleFrom(
-                        foregroundColor: const Color(AppColors.primary),
+                        foregroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                       ),
                       icon: const Icon(Icons.diamond, size: 16),
@@ -62,9 +63,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: CircleAvatar(
-                      backgroundColor: const Color(AppColors.primary).withValues(alpha: 30),
+                      backgroundColor: AppColors.primary.withValues(alpha: 30),
                       radius: 16,
-                      child: const Icon(Icons.person, size: 18, color: Color(AppColors.primary)),
+                      child: Icon(Icons.person,
+                          size: 18, color: AppColors.primary),
                     ),
                   ),
                 ],
@@ -78,7 +80,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             children: [
               const SizedBox(height: 12),
-              const Text('Menu', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+              const Text('Menu',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               const Divider(),
               Expanded(
                 child: ListView.builder(
@@ -86,14 +89,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   itemBuilder: (ctx, i) {
                     final sel = i == _selectedIndex;
                     return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: sel ? const Color(AppColors.primary) : Colors.transparent,
+                        color: sel ? AppColors.primary : Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListTile(
-                        leading: Icon(_menus[i]['icon'] as IconData, color: sel ? Colors.white : const Color(AppColors.dark)),
-                        title: Text(_menus[i]['label'] as String, style: TextStyle(color: sel ? Colors.white : const Color(AppColors.dark))),
+                        leading: Icon(_menus[i]['icon'] as IconData,
+                            color: sel ? Colors.white : AppColors.dark),
+                        title: Text(_menus[i]['label'] as String,
+                            style: TextStyle(
+                                color: sel ? Colors.white : AppColors.dark)),
                         onTap: () => setState(() => _selectedIndex = i),
                       ),
                     );
@@ -104,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(AppColors.primaryOrange),
+                    color: AppColors.primaryOrange,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   padding: const EdgeInsets.all(16),
@@ -118,18 +125,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.help_outline, color: Color(AppColors.primaryOrange)),
+                        child: Icon(Icons.help_outline,
+                            color: AppColors.primaryOrange),
                       ),
                       const SizedBox(height: 12),
-                      const Text('Besoin d\'aide ?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                      const Text('Besoin d\'aide ?',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                       const SizedBox(height: 4),
-                      const Text('Contactez-nous ici', style: TextStyle(color: Colors.white70)),
+                      const Text('Contactez-nous ici',
+                          style: TextStyle(color: Colors.white70)),
                       const SizedBox(height: 12),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          foregroundColor: const Color(AppColors.dark),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          foregroundColor: AppColors.dark,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
                         ),
                         onPressed: () {},
                         child: const Text('Prendre contact'),
@@ -153,7 +167,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
-                  const Text('Menu', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  const Text('Menu',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const Divider(),
                   Expanded(
                     child: ListView.builder(
@@ -161,14 +177,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       itemBuilder: (ctx, i) {
                         final sel = i == _selectedIndex;
                         return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: sel ? const Color(AppColors.primary) : Colors.transparent,
+                            color: sel ? AppColors.primary : Colors.transparent,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: ListTile(
-                            leading: Icon(_menus[i]['icon'] as IconData, color: sel ? Colors.white : const Color(AppColors.dark)),
-                            title: Text(_menus[i]['label'] as String, style: TextStyle(color: sel ? Colors.white : const Color(AppColors.dark))),
+                            leading: Icon(_menus[i]['icon'] as IconData,
+                                color: sel ? Colors.white : AppColors.dark),
+                            title: Text(_menus[i]['label'] as String,
+                                style: TextStyle(
+                                    color:
+                                        sel ? Colors.white : AppColors.dark)),
                             onTap: () => setState(() => _selectedIndex = i),
                           ),
                         );
