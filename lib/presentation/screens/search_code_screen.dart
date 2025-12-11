@@ -1,61 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/colors.dart';
 import '../../core/design_tokens.dart';
 import '../../core/assets.dart';
+import '../../core/entities/public_status.dart';
+import '../../features/search/provider/search_provider.dart';
 import '../routes/app_router.dart';
 
-class SearchCodeScreen extends StatefulWidget {
+class SearchCodeScreen extends ConsumerStatefulWidget {
   const SearchCodeScreen({super.key});
   @override
-  State<SearchCodeScreen> createState() => _SearchCodeScreenState();
+  ConsumerState<SearchCodeScreen> createState() => _SearchCodeScreenState();
 }
 
-class _SearchCodeScreenState extends State<SearchCodeScreen> {
+class _SearchCodeScreenState extends ConsumerState<SearchCodeScreen> {
   final _controller = TextEditingController();
-  bool _loading = false;
-  String? _result; // 'couple' | 'single'
-  Map<String, dynamic>? _userProfile; // nom, photo, age
-  bool _showResultSheet = false;
 
   void _submit() async {
     final code = _controller.text.trim();
     if (code.isEmpty) {
-      _showSnack('Entrez un code');
+      _showSnack('Entrez un code', isError: true);
       return;
     }
-    setState(() {
-      _loading = true;
-      _result = null;
-      _userProfile = null;
-      _showResultSheet = false;
-    });
-    await Future.delayed(DT.dBase);
 
-    // Mock data - en production, ça viendra de l'API
-    final mockProfiles = [
-      {'name': 'Sophie Martin', 'age': 24, 'photo': '👩'},
-      {'name': 'Lucas Dubois', 'age': 27, 'photo': '👨'},
-      {'name': 'Emma Leroy', 'age': 22, 'photo': '👩‍🦰'},
-      {'name': 'Thomas Bernard', 'age': 29, 'photo': '🧑'},
-      {'name': 'Léa Moreau', 'age': 25, 'photo': '👱‍♀️'},
-    ];
-
-    setState(() {
-      _result = code.length % 2 == 0 ? 'couple' : 'single';
-      _userProfile = mockProfiles[code.length % mockProfiles.length];
-      _loading = false;
-      _showResultSheet = true;
-    });
+    // Lance la recherche via le provider
+    await ref.read(publicStatusSearchProvider.notifier).search(code);
   }
 
-  void _showSnack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  void _showSnack(String msg, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              isError ? Icons.error_outline : Icons.check_circle_outline,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: Text(msg)),
+          ],
+        ),
+        backgroundColor: isError ? Colors.red[700] : Colors.green[700],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+
+  void _showErrorSnack(String error) {
+    String message = error;
+
+    // Parse les messages d'erreur connus
+    if (error.contains('Invalid or expired code')) {
+      message = 'Code invalide ou expiré';
+    } else if (error.contains('Ressource non trouvée')) {
+      message = 'Utilisateur introuvable avec ce code';
+    } else if (error.contains('Pas de connexion Internet')) {
+      message = 'Vérifiez votre connexion Internet';
+    } else if (error.contains('Délai de connexion dépassé')) {
+      message = 'Le serveur met trop de temps à répondre';
+    }
+
+    _showSnack(message, isError: true);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 700;
+
+    // Écoute les erreurs pour afficher les toasts
+    ref.listen<AsyncValue<PublicStatus?>>(
+      publicStatusSearchProvider,
+      (previous, next) {
+        // Affiche le toast seulement si on passe d'un état non-erreur à erreur
+        if (previous?.hasError != true && next.hasError) {
+          next.whenOrNull(
+            error: (error, stackTrace) {
+              _showErrorSnack(error.toString());
+            },
+          );
+        }
+      },
+    );
+
+    // Écoute l'état de la recherche
+    final searchState = ref.watch(publicStatusSearchProvider);
+    final isLoading = searchState.isLoading;
+    final publicStatus = searchState.valueOrNull;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -115,13 +151,13 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(child: _buildForm()),
+                          Expanded(child: _buildForm(isLoading)),
                           const SizedBox(width: DT.s7),
                           Expanded(child: _buildIllustration()),
                         ],
                       )
                     else ...[
-                      _buildForm(),
+                      _buildForm(isLoading),
                       const SizedBox(height: DT.s7),
                       _buildIllustration(),
                     ],
@@ -133,18 +169,18 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
               ),
             ),
           ),
-          if (_showResultSheet)
+          if (publicStatus != null)
             _ResultBottomSheet(
-              result: _result!,
-              userProfile: _userProfile!,
-              onClose: () => setState(() => _showResultSheet = false),
+              publicStatus: publicStatus,
+              onClose: () =>
+                  ref.read(publicStatusSearchProvider.notifier).reset(),
             ),
         ],
       ),
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(bool isLoading) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -162,13 +198,13 @@ class _SearchCodeScreenState extends State<SearchCodeScreen> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _loading ? null : _submit,
+            onPressed: isLoading ? null : _submit,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               elevation: 2,
               shadowColor: AppColors.primary.withValues(alpha: 0.3),
             ),
-            child: _loading
+            child: isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,
@@ -395,21 +431,20 @@ class _InfoBadge extends StatelessWidget {
 }
 
 class _ResultBottomSheet extends StatelessWidget {
-  final String result; // 'couple' | 'single'
-  final Map<String, dynamic> userProfile;
+  final PublicStatus publicStatus;
   final VoidCallback onClose;
+
   const _ResultBottomSheet({
-    required this.result,
-    required this.userProfile,
+    required this.publicStatus,
     required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isCouple = result == 'couple';
-    final name = userProfile['name'] as String;
-    final age = userProfile['age'] as int;
-    final photo = userProfile['photo'] as String;
+    final isCouple = publicStatus.isInCouple;
+    final fullName = publicStatus.fullName;
+    final avatarUrl = publicStatus.avatarUrl;
+    final situation = publicStatus.situation;
 
     return Positioned(
       left: 0,
@@ -479,10 +514,13 @@ class _ResultBottomSheet extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Center(
-                          child: Text(
-                            photo,
-                            style: const TextStyle(fontSize: 32),
+                        child: ClipOval(
+                          child: Image.network(
+                            avatarUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.person, size: 32);
+                            },
                           ),
                         ),
                       ),
@@ -492,7 +530,7 @@ class _ResultBottomSheet extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              name,
+                              fullName,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -500,7 +538,7 @@ class _ResultBottomSheet extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '$age ans',
+                              situation,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
@@ -546,7 +584,7 @@ class _ResultBottomSheet extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          isCouple ? 'En couple' : 'Célibataire',
+                          situation,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

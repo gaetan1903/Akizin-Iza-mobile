@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../../core/entities/user.dart';
+import '../../../core/entities/public_status.dart';
 import '../../../core/sources/http_client.dart';
 import '../../../core/utils/app_exception.dart';
 import 'search_params.dart';
@@ -10,6 +11,33 @@ class SearchApi {
 
   /// Crée une instance de [SearchApi] avec les dépendances nécessaires
   SearchApi({required this.remoteClient});
+
+  /// Recherche publique du statut relationnel d'un utilisateur par code
+  /// Ne nécessite pas d'authentification
+  /// Endpoint: GET /api/search/public-status?code={code}
+  /// Exemple de réponse:
+  /// ```json
+  /// {
+  ///   "firstName": "Emery",
+  ///   "lastName": "Emard",
+  ///   "avatarUrl": "https://cdn.jsdelivr.net/.../85.jpg",
+  ///   "situation": "En couple"
+  /// }
+  /// ```
+  Future<PublicStatus> searchPublicStatus(String code) async {
+    try {
+      final Map<String, dynamic> response = await remoteClient.get(
+        'search/public-status',
+        queryParameters: {'code': code},
+      );
+
+      return PublicStatus.fromJson(response);
+    } on DioException catch (e) {
+      throw handleError(e);
+    } catch (e) {
+      throw BusinessException('Erreur lors de la recherche publique: $e');
+    }
+  }
 
   /// Recherche un utilisateur par son code
   /// Lance une [AppException] en cas d'échec
